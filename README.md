@@ -1,24 +1,28 @@
-# README
+# Movies Search
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Prerequisites
 
-Things you may want to cover:
+To set up your development environment, you'll need to following:
 
-* Ruby version
+- The appropriate version of Ruby, along with the Bundler gem
+- Docker
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## How to setup development environment
+- Clone the repo
+- Install the necessary gems
+```
+bundle install
+```
+- Start resources in Docker
+```
+docker compose up -d
+```
+- You need to create a .env file (copy from .env.test) and set up the MOVIE_API_KEY environment variable
+- Start the rails server and check https://loaclhost:3000
+```
+bundle exec rails server
+```
+- You can run the tests with the following command:
+```
+docker compose up -d
+```
