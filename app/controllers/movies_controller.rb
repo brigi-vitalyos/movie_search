@@ -4,12 +4,13 @@ class MoviesController < ApplicationController
 
   def search
     movies_repo = MoviesRepository.new
+    @cache_hit_count = 0
 
     result = movies_repo.fetch query_string, page_number
     if result.nil? || result.empty?
       result = MoviesClient.new.search(query_string)
       movies_repo.store query_string, page_number, result
-      CacheHit.create! query_string: query_string, count: 0
+      CacheHit.create! query_string: query_string, count: @cache_hit_count
     else
       @cache_hit_count = cache_hit_for(query_string).count + 1
       cache_hit_for(query_string).update count: @cache_hit_count
