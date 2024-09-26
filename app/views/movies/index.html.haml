@@ -1,1 +1,7 @@
-%p Let's search
+
+= form_tag(movies_search_path) do
+  = text_field_tag :query_string, params["query_string"]
+  = submit_tag "Search"
+
+- @movies.each do |movie|
+  %p= movie.title
