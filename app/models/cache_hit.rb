@@ -1,0 +1,2 @@
+class CacheHit < ApplicationRecord
+end
