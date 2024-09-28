@@ -1,13 +1,16 @@
-require_relative '../../lib/movies_client.rb'
-
 require 'webmock/rspec'
+require 'dotenv'
+
+require_relative '../../lib/movies_client.rb'
+Dotenv.load '.env.test'
 
 RSpec.describe MoviesClient do
   subject(:client) { described_class.new }
 
   let(:query_string) { 'movie' }
   let(:page_number) { 1 }
-  let(:url) { "#{MoviesClient::BASE_URL}?query=#{query_string}&page=#{page_number}" }
+  let(:url) { "#{ENV['MOVIE_API_URL']}?query=#{query_string}&page=#{page_number}" }
+  # let(:url) { "#{ENV['MOVIE_API_URL']}?query=#{query_string}&page=#{page_number}" }
 
   let(:response_body) do
     {'page'=>page_number,
@@ -32,13 +35,14 @@ RSpec.describe MoviesClient do
 
   describe '#search' do
     it 'returns the response body when response is successful' do
-      stub_request(:get, url).with(headers: {'Authorization'=> 'Bearer' })
+      pp url
+      stub_request(:get, url).with(headers: {'Authorization' => %r{Bearer \w+}})
                              .to_return(status: 200, body: response_body)
       expect(client.search(query_string)).to eq response_body
     end
 
     it 'throws an exception when response is failed' do
-      stub_request(:get, url).with(headers: {'Authorization'=> 'Bearer' })
+      stub_request(:get, url).with(headers: {'Authorization' => %r{Bearer \w+}})
                              .to_return(status: 500, body: 'Server Unavailable')
       expect{client.search(query_string)}.to raise_error 'Movie Database Server Unavailable'
     end
@@ -47,7 +51,7 @@ RSpec.describe MoviesClient do
       let(:query_string) { 'öüóőúéáí' }
 
       it 'returns the response body when response is successful' do
-        stub_request(:get, url).with(headers: {'Authorization'=> 'Bearer' })
+        stub_request(:get, url).with(headers: {'Authorization' => %r{Bearer \w+}})
                                .to_return(status: 200, body: response_body)
         expect(client.search(query_string)).to eq response_body
       end
@@ -57,7 +61,7 @@ RSpec.describe MoviesClient do
       let(:page_number) { 10 }
 
       it 'returns the requested page' do
-        stub_request(:get, url).with(headers: {'Authorization'=> 'Bearer' })
+        stub_request(:get, url).with(headers: {'Authorization' => %r{Bearer \w+}})
                                .to_return(status: 200, body: response_body)
         expect(client.search(query_string, page: page_number)).to eq response_body
       end
