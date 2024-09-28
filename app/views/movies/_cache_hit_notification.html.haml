@@ -1,0 +1,7 @@
+.d-flex.gap-2.justify-content-center.py-3
+  - if cache_hit_count == 0
+    %span.badge.d-flex.p-2.align-items-center.text-bg-primary.rounded-pill
+      %span.px-1= "You get this result from the API directly"
+  - else
+    %span.badge.d-flex.p-2.align-items-center.text-bg-success.rounded-pill
+      %span.px-1= "You get this result from the cache! :)"

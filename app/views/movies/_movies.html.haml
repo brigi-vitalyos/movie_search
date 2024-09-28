@@ -1,0 +1,15 @@
+- if movies.empty?
+  %p No results found :(
+- else
+  .row.row-cols-1.row-cols-sm-2.row-cols-md-5.g-2
+    - movies.each do |movie|
+      .col
+        .card.shadow-sm
+          =image_tag "https://image.tmdb.org/t/p/original/#{movie.poster_path}", class: "bd-placeholder-img card-img-top shadow-sm"
+          .card-body
+            %h5.card-text= movie.title
+            %p.card-text= movie.description.truncate(150)
+            .d-flex.justify-content-between.align-items-center
+              .btn-group
+                =button_tag "View", class:"btn btn-sm btn-outline-secondary"
+              %small.text-body-secondary="Popularity: 11"
