@@ -1,0 +1,5 @@
+%nav
+  %ul.pagination.justify-content-center
+    - (1..total_pages).each do |page|
+      %li.page-item
+        = button_to page, movies_search_path(page_number: page, query_string: params["query_string"]), method: :post, class: "page-link"

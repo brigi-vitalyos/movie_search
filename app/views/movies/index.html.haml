@@ -7,4 +7,4 @@
   = render 'cache_hit_notification', cache_hit_count: @cache_hit_count
 
 - unless @movies.nil?
-  = render 'movies', movies: @movies
+  = render 'movies', movies: @movies, total_pages: @total_pages

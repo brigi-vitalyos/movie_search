@@ -8,13 +8,14 @@ class MoviesController < ApplicationController
 
     result = movies_repo.fetch query_string, page_number
     if result.nil? || result.empty?
-      result = MoviesClient.new.search(query_string)
+      result = MoviesClient.new.search(query_string, page: page_number)
       movies_repo.store query_string, page_number, result
       CacheHit.create! query_string: query_string, count: @cache_hit_count
     else
       @cache_hit_count = cache_hit_for(query_string).count + 1
       cache_hit_for(query_string).update count: @cache_hit_count
     end
+    @total_pages = result['total_pages']
     @movies = process_movies(result['results'])
     render :index
   rescue
@@ -38,6 +39,6 @@ class MoviesController < ApplicationController
   end
 
   def page_number
-    1
+    params[:page_number] || 1
   end
 end
