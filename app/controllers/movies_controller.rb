@@ -12,8 +12,9 @@ class MoviesController < ApplicationController
       movies_repo.store query_string, page_number, result
       create_first_cache_hit_for(query_string, page_number)
     else
-      @cache_hit_count = cache_hit_for(query_string, page_number).count + 1
-      cache_hit_for(query_string, page_number).update count: @cache_hit_count
+      cache_hit = cache_hit_for(query_string, page_number)
+      cache_hit.increase_counter!
+      @cache_hit_count = cache_hit.count
     end
     @total_pages = result['total_pages']
     @movies = process_movies(result['results'])
@@ -38,8 +39,8 @@ class MoviesController < ApplicationController
   end
 
   def cache_hit_for(query_string, page_number)
-    @cache_hit ||= CacheHit.where(query_string: query_string, page_number: page_number)
-                           .where('created_at > ?', 2.minutes.ago.to_s).first
+    CacheHit.where(query_string: query_string, page_number: page_number)
+            .where('created_at > ?', 2.minutes.ago.to_s).first
   end
   def query_string
     params[:query_string]
