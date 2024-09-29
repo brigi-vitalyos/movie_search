@@ -98,7 +98,7 @@ RSpec.describe MoviesController, type: :controller do
 
       it 'renders error page' do
         do_request
-        expect(response).to redirect_to '/500'
+        expect(response).to render_template 'errors/server_error'
       end
     end
   end

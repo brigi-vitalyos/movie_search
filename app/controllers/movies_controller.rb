@@ -20,7 +20,7 @@ class MoviesController < ApplicationController
 
     render :index
   rescue
-    redirect_to '/500'
+    render 'errors/server_error'
   end
 
   private
