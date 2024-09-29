@@ -34,8 +34,7 @@ class MoviesController < ApplicationController
 
   def create_first_cache_hit_for(query_string, page_number)
     CacheHit.create! query_string: query_string,
-                     page_number: page_number,
-                     count: @cache_hit_count
+                     page_number: page_number
   end
 
   def cache_hit_for(query_string, page_number)
