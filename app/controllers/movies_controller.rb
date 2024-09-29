@@ -17,6 +17,7 @@ class MoviesController < ApplicationController
     end
     @total_pages = result['total_pages']
     @movies = process_movies(result['results'])
+
     render :index
   rescue
     redirect_to '/500'
@@ -46,6 +47,6 @@ class MoviesController < ApplicationController
   end
 
   def page_number
-    params[:page_number] || 1
+    @current_page ||= (params[:page_number] || 1).to_i
   end
 end

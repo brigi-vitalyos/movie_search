@@ -10,7 +10,6 @@ RSpec.describe MoviesClient do
   let(:query_string) { 'movie' }
   let(:page_number) { 1 }
   let(:url) { "#{ENV['MOVIE_API_URL']}?query=#{query_string}&page=#{page_number}" }
-  # let(:url) { "#{ENV['MOVIE_API_URL']}?query=#{query_string}&page=#{page_number}" }
 
   let(:response_body) do
     {'page'=>page_number,
@@ -35,7 +34,6 @@ RSpec.describe MoviesClient do
 
   describe '#search' do
     it 'returns the response body when response is successful' do
-      pp url
       stub_request(:get, url).with(headers: {'Authorization' => %r{Bearer \w+}})
                              .to_return(status: 200, body: response_body)
       expect(client.search(query_string)).to eq response_body

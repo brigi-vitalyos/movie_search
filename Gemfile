@@ -26,3 +26,6 @@ group :development, :test do
   gem 'webmock'
 end
 
+group :test do
+  gem 'rails-controller-testing'
+end
