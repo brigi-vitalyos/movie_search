@@ -3,19 +3,15 @@ class MoviesController < ApplicationController
   end
 
   def search
-    movies_repo = MoviesRepository.new
-    @cache_hit_count = 0
+    cached_result = movies_repo.fetch query_string, page_number
 
-    result = movies_repo.fetch query_string, page_number
-    if result.nil? || result.empty?
-      result = MoviesClient.new.search(query_string, page: page_number)
-      movies_repo.store query_string, page_number, result
-      create_first_cache_hit_for(query_string, page_number)
+    if cached_result.nil? || cached_result.empty?
+      cache_hit_count, result = execute_search_using_api
     else
-      cache_hit = cache_hit_for(query_string, page_number)
-      cache_hit.increase_counter!
-      @cache_hit_count = cache_hit.count
+      cache_hit_count, result = increase_cache_hit_count, cached_result
     end
+
+    @cache_hit_count = cache_hit_count
     @total_pages = result['total_pages']
     @movies = process_movies(result['results'])
 
@@ -25,6 +21,23 @@ class MoviesController < ApplicationController
   end
 
   private
+
+  def execute_search_using_api
+    result = MoviesClient.new.search(query_string, page: page_number)
+    movies_repo.store query_string, page_number, result
+    create_first_cache_hit_for(query_string, page_number)
+
+    [0, result]
+  end
+
+  def increase_cache_hit_count
+    cache_hit = CacheHit.where(query_string: query_string, page_number: page_number)
+                        .where('created_at > ?', 2.minutes.ago.to_s).first
+    cache_hit.increase_counter!
+
+    cache_hit.count
+  end
+
   def process_movies(results)
     results.each_with_object([]) do |movie, arr|
       arr << Movie.new(movie)
@@ -33,17 +46,17 @@ class MoviesController < ApplicationController
 
   private
 
+  def movies_repo
+    MoviesRepository.new
+  end
+
   def create_first_cache_hit_for(query_string, page_number)
     CacheHit.create! query_string: query_string,
                      page_number: page_number
   end
 
-  def cache_hit_for(query_string, page_number)
-    CacheHit.where(query_string: query_string, page_number: page_number)
-            .where('created_at > ?', 2.minutes.ago.to_s).first
-  end
   def query_string
-    params[:query_string]
+    params[:query_string].to_s
   end
 
   def page_number

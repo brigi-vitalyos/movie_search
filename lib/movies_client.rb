@@ -9,8 +9,6 @@ class MoviesClient
     response.body
   end
 
-
-
   def client
     Faraday.new(ENV['MOVIE_API_URL']) do |faraday|
       faraday.request :authorization, 'Bearer', ENV['MOVIE_API_KEY']
