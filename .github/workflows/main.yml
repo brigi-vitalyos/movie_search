@@ -1,0 +1,33 @@
+name: CI
+
+on: push
+
+env:
+  MOVIE_API_URL: http://movie-api.example.com
+  MOVIE_API_KEY: the_key
+  MOVIES_REDIS_URL: redis://localhost:6380/1
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          bundle install
+
+      - name: Start dependencies in docker
+        run: docker-compose up -d && sleep 30
+
+      - name: Run tests
+        run: |
+          bundle exec rspec
