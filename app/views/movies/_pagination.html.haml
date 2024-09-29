@@ -1,5 +1,14 @@
+- ranges = pagination_ranges(@current_page, total_pages)
 %nav
   %ul.pagination.justify-content-center
-    - (1..total_pages).each do |page|
-      %li.page-item
-        = button_to page, movies_search_path(page_number: page, query_string: params["query_string"]), method: :post, class: "page-link"
+    %li.page-item
+      = button_to "Previous", movies_search_path(page_number: @current_page-1, query_string: params["query_string"]), method: :post, class: "page-link #{'disabled' if @current_page == 1}"
+    - ranges.each do |page_ranges|
+      - page_ranges.each do |page|
+        %li.page-item
+          =button_to page, movies_search_path(page_number: page, query_string: params["query_string"]), method: :post, class: "page-link #{'active' if page == @current_page.to_i}"
+      - unless page_ranges == ranges.last
+        %li.page-item
+          %span.page-link.disabled ...
+    %li.page-item
+      = button_to "Next", movies_search_path(page_number: @current_page+1, query_string: params["query_string"]), method: :post, class: "page-link #{'disabled' if @current_page == total_pages}"
