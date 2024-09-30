@@ -19,28 +19,20 @@ RSpec.describe Movie, type: :model do
      'vote_average'=>7.1,
      'vote_count'=>25}
   end
+  
+  attributes = %w[title overview poster_path
+              original_language original_title
+              adult popularity release_date
+              vote_average vote_count
+              video]
 
-  describe '#title' do
-    subject(:title) { movie.title }
+  attributes.each do |attribute|
+    describe "##{attribute}" do
+      subject { movie.send(attribute) }
 
-    it 'returns the movie title' do
-      expect(title).to eq movie_config['title']
-    end
-  end
-
-  describe '#overview' do
-    subject(:overview) { movie.overview }
-
-    it 'returns the movie overview' do
-      expect(overview).to eq movie_config['overview']
-    end
-  end
-
-  describe '#poster_path' do
-    subject(:poster_path) { movie.poster_path }
-
-    it 'returns the movie poster_path' do
-      expect(poster_path).to eq movie_config['poster_path']
+      it "returns the movie #{attribute}" do
+        expect(subject).to eq movie_config[attribute]
+      end
     end
   end
 end

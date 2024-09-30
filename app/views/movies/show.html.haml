@@ -1,8 +1,47 @@
 .text-center
   = image_tag "https://image.tmdb.org/t/p/original/#{@movie.poster_path}", class: "img-fluid rounded", style: "height: 400px;"
+
 .my-3.p-3.bg-white.rounded.box-shadow
-  %h6.border-bottom.border-gray.pb-2.mb-0= @movie.title
-  .media.text-muted.pt-3
-    %p.media-body.pb-3.mb-0.small.lh-125.border-bottom.border-gray
-      %strong.d-block.text-gray-dark Overview
-      = @movie.overview
+  %h4.border-bottom.border-gray.pb-2.mb-0.text-center= @movie.title
+  .container
+    .row.border-bottom.border-gray
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Original title
+          = @movie.original_title
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Original language
+          = @movie.original_language
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Release Date
+          = @movie.release_date
+
+    .row.border-bottom.border-gray
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Overview
+          = @movie.overview
+
+    .row.border-bottom.border-gray
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Popularity
+          = @movie.popularity
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Vote average
+          = @movie.vote_average
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Vote count
+          = @movie.vote_count
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Adult
+          = @movie.adult
+      .col.text-muted.pt-3
+        %p.pb-3.mb-0.small
+          %strong.d-block.text-gray-dark Video
+          = @movie.video
