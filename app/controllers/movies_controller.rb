@@ -16,13 +16,15 @@ class MoviesController < ApplicationController
     @movies = process_movies(result['results'])
 
     render :index
-  rescue
+  rescue => e
+    logger.warn e
     render 'errors/server_error'
   end
 
   def show
     @movie = Movie.new JSON.parse(params[:movie])
-  rescue
+  rescue => e
+    logger.warn e
     render 'errors/server_error'
   end
 

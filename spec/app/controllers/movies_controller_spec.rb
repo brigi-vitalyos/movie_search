@@ -94,11 +94,17 @@ RSpec.describe MoviesController, type: :controller do
     end
 
     context 'when the Movies API responds with error' do
-      before { allow_any_instance_of(MoviesClient).to receive(:search).and_raise 'Movie Database Server Unavailable' }
+      before { allow_any_instance_of(MoviesClient).to receive(:search).and_raise error }
+      let(:error) { StandardError.new('Movie Database Server Unavailable') }
 
       it 'renders error page' do
         do_request
         expect(response).to render_template 'errors/server_error'
+      end
+
+      it 'logs the error message' do
+        expect(Rails.logger).to receive(:warn).with error
+        do_request
       end
     end
   end
@@ -137,6 +143,11 @@ RSpec.describe MoviesController, type: :controller do
       it 'renders error page' do
         do_request
         expect(response).to render_template 'errors/server_error'
+      end
+
+      it 'logs the error message' do
+        expect(Rails.logger).to receive(:warn)
+        do_request
       end
     end
   end
