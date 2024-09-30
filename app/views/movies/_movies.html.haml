@@ -16,5 +16,5 @@
                     =movie.popularity
               %p.card-text.overflow-hidden= movie.overview.truncate(150)
 
-
+- if total_pages > 1 || ENV['ALWAYS_SHOW_PAGINATION']
   = render 'pagination', total_pages: total_pages
