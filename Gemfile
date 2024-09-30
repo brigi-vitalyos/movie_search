@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+ruby file: ".ruby-version"
 
 gem "rails"
 gem "sprockets-rails"
