@@ -5,10 +5,7 @@
     - movies.each do |movie|
       .col
         .card.shadow-sm
-          - if movie.poster_path.present?
-            = image_tag "https://image.tmdb.org/t/p/original/#{movie.poster_path}", class: "card-img-top shadow-sm"
-          - else
-            = image_tag "https://placehold.co/1400x2100?text=#{movie.title}&font=roboto", class: "card-img-top shadow-sm"
+          = image_tag poster_url_for(movie), class: "card-img-top shadow-sm"
           .card-body
             %h5.card-text= movie.title
             %p.card-text= movie.overview.truncate(150)

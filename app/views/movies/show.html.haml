@@ -1,5 +1,5 @@
 .text-center
-  = image_tag "https://image.tmdb.org/t/p/original/#{@movie.poster_path}", class: "img-fluid rounded", style: "height: 400px;"
+  = image_tag poster_url_for(@movie), class: "img-fluid rounded", style: "height: 400px;"
 
 .my-3.p-3.bg-white.rounded.box-shadow
   %h4.border-bottom.border-gray.pb-2.mb-0.text-center= @movie.title

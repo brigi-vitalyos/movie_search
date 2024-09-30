@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe MoviesHelper, type: :helper do
 
-  describe "#pagination_ranges" do
+  describe '#pagination_ranges' do
     subject(:ranges) { helper.pagination_ranges(current_page, total_pages) }
     let(:current_page) { 1 }
 
@@ -64,6 +64,25 @@ RSpec.describe MoviesHelper, type: :helper do
         it 'returns with an extra range for the current page' do
           expect(ranges).to eq [(1..3), (current_page-1..current_page+1), (total_pages-2..total_pages)]
         end
+      end
+    end
+  end
+
+  describe '#poster_url_for' do
+    subject(:poster_url) { helper.poster_url_for(movie) }
+    let(:movie) { Movie.new(poster_path: movie_poster_path, title: movie_title) }
+    let(:movie_poster_path) { '/xyz.jpg' }
+    let(:movie_title) { 'title' }
+
+    it 'returns the full image url' do
+      expect(poster_url).to eq "https://image.tmdb.org/t/p/original/#{movie_poster_path}"
+    end
+
+    context 'when poster_path is nil' do
+      let(:movie_poster_path) { nil }
+
+      it 'returns a placeholder image url' do
+        expect(poster_url).to eq "https://placehold.co/1400x2100?text=#{movie_title}&font=roboto"
       end
     end
   end

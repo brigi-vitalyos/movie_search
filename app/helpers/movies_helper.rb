@@ -8,6 +8,14 @@ module MoviesHelper
     end
   end
 
+  def poster_url_for(movie)
+    if movie.poster_path.present?
+      "https://image.tmdb.org/t/p/original/#{movie.poster_path}"
+    else
+      "https://placehold.co/1400x2100?text=#{movie.title}&font=roboto"
+    end
+  end
+
   private
 
   def generate_ranges(current_page, total_pages)
