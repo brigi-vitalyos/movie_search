@@ -31,3 +31,13 @@ jobs:
       - name: Run tests
         run: |
           bundle exec rspec
+
+  deloy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'movies-search'
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
