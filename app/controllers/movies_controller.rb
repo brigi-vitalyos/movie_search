@@ -20,6 +20,12 @@ class MoviesController < ApplicationController
     render 'errors/server_error'
   end
 
+  def show
+    @movie = Movie.new JSON.parse(params[:movie])
+  rescue
+    render 'errors/server_error'
+  end
+
   private
 
   def execute_search_using_api

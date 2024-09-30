@@ -11,10 +11,10 @@
             = image_tag "https://placehold.co/1400x2100?text=#{movie.title}&font=roboto", class: "card-img-top shadow-sm"
           .card-body
             %h5.card-text= movie.title
-            %p.card-text= movie.description.truncate(150)
+            %p.card-text= movie.overview.truncate(150)
             .d-flex.justify-content-between.align-items-center
-              -# .btn-group
-              -#   =button_tag "View", class:"btn btn-sm btn-outline-secondary"
+              .btn-group
+                = button_to "View", movies_show_path, params: {movie: movie.to_json}, method: :post, class:"btn btn-sm btn-outline-secondary"
               -# %small.text-body-secondary="Popularity: 11"
 
   = render 'pagination', total_pages: total_pages
