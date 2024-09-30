@@ -28,11 +28,11 @@ RSpec.describe Movie, type: :model do
     end
   end
 
-  describe '#description' do
-    subject(:description) { movie.description }
+  describe '#overview' do
+    subject(:overview) { movie.overview }
 
-    it 'returns the movie description' do
-      expect(description).to eq movie_config['overview']
+    it 'returns the movie overview' do
+      expect(overview).to eq movie_config['overview']
     end
   end
 
