@@ -8,8 +8,8 @@ RSpec.describe MoviesController, type: :controller do
     end
   end
 
-  describe 'POST #search' do
-    subject(:do_request) { post :search, params: params }
+  describe 'GET #search' do
+    subject(:do_request) { get :search, params: params }
     let(:params) { {query_string: query_string, page_number: page_number} }
     let(:query_string) { 'movie_title' }
     let(:page_number) { 1 }

@@ -1,4 +1,4 @@
-= form_tag(movies_search_path) do
+= form_tag(movies_search_path, method: :get) do
   .d-flex.gap-2.justify-content-center.py-3.col-lg-6.mx-auto
     = text_field_tag :query_string, params["query_string"], placeholder: "Type movie title...", class: "form-control d-inline-flex align-items-center"
     = submit_tag "Search", class: "btn btn-primary d-inline-flex align-items-center"
