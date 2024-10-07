@@ -32,7 +32,7 @@ jobs:
         run: |
           bundle exec rspec
 
-  deloy:
+  deploy:
     name: Deploy
     needs: [test]
     runs-on: ubuntu-22.04
