@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+  rescue_from StandardError, with: :handle_error
+
   def index
   end
 
@@ -16,19 +18,18 @@ class MoviesController < ApplicationController
     @movies = process_movies(result['results'])
 
     render :index
-  rescue => e
-    logger.warn e
-    render 'errors/server_error'
   end
 
   def show
     @movie = Movie.new JSON.parse(params[:movie])
-  rescue => e
-    logger.warn e
-    render 'errors/server_error'
   end
 
   private
+
+  def handle_error(e)
+    logger.warn e
+    render 'errors/server_error'
+  end
 
   def execute_search_using_api
     result = MoviesClient.new.search(query_string, page: page_number)
@@ -52,10 +53,8 @@ class MoviesController < ApplicationController
     end
   end
 
-  private
-
   def movies_repo
-    MoviesRepository.new
+    @movies_repo ||= MoviesRepository.new
   end
 
   def create_first_cache_hit_for(query_string, page_number)
