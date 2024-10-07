@@ -42,7 +42,13 @@ RSpec.describe MoviesClient do
     it 'throws an exception when response is failed' do
       stub_request(:get, url).with(headers: {'Authorization' => %r{Bearer \w+}})
                              .to_return(status: 500, body: 'Server Unavailable')
-      expect{client.search(query_string)}.to raise_error 'Movie Database Server Unavailable'
+      expect{client.search(query_string)}.to raise_error 'Movie Database Server Error'
+    end
+
+    it 'throws an exception when response is not 200' do
+      stub_request(:get, url).with(headers: {'Authorization' => %r{Bearer \w+}})
+                             .to_return(status: 300, body: 'Server Unavailable')
+      expect{client.search(query_string)}.to raise_error 'Movie Database Server Error'
     end
 
     context 'when the query string contains specific characters' do

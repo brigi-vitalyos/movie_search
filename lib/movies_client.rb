@@ -5,7 +5,7 @@ require 'faraday'
 class MoviesClient
   def search(query_string, page: 1)
     response = client.get("?query=#{CGI.escape(query_string)}&page=#{page}")
-    raise 'Movie Database Server Unavailable' if response.status >= 500
+    raise 'Movie Database Server Error' if response.status != 200
     response.body
   end
 
